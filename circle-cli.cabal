@@ -29,6 +29,7 @@ executable circle-cli-exe
                      , circle-cli
                      , dhall
                      , directory
+                     , gitlib
                      , lens
                      , template-haskell
                      , text

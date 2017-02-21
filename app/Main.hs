@@ -13,6 +13,7 @@ import Lib
 import Network.Wreq
 import System.Directory
 import qualified Data.Text as ST
+import Git
 
 data CircleConfig = CircleConfig
   { apiToken :: Text
@@ -25,9 +26,10 @@ instance Interpret CircleConfig
 main :: IO ()
 main = do
   home <- pack <$> getHomeDirectory
-  x <- input auto (home `append` "/.circle/config")
-  print (x :: CircleConfig)
-  let opts = defaults & param "circle-token" .~ [toStrict (apiToken x)]
+  circleConfig <- input auto (home `append` "/.circle/config")
+  print (circleConfig :: CircleConfig)
+  let apiToken' = toStrict (apiToken circleConfig)
+  let opts = defaults & param "circle-token" .~ [apiToken']
   r <- getWith opts "https://circleci.com/api/v1.1/me"
   print r
   print (r ^. responseStatus)
