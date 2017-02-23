@@ -37,6 +37,10 @@ resolver: lts-8.2
 # will not be run. This is useful for tweaking upstream packages.
 packages:
 - '.'
+- location:
+   git: https://github.com/Gabriel439/Haskell-Dhall-Library.git
+   commit: 505a786c6dd7dcc37e43f3cc96031d30028625be
+
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 extra-deps:
