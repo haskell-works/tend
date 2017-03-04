@@ -30,14 +30,6 @@ import qualified Prelude as P
 import qualified Data.List.Extra as LE
 import Parser
 
-newtype CircleConfig = CircleConfig
-  { apiToken :: Text
-  } deriving (Generic, Show)
-
-makeLenses ''CircleConfig
-
-instance Interpret CircleConfig
-
 splitByChar :: Char -> String -> [String]
 splitByChar c s = case rest of
   []     -> [chunk]
@@ -67,11 +59,6 @@ setEnv opts = do
         ] :: Map String String
   r <- postWith opts "https://circleci.com/api/v1.1/project/github/pico-works/pico-disposal/envvar" (toJSON vars)
   print r
-
-data GithubRemote = GithubRemote
-  { githubRemoteOrganisation :: String
-  , githubRemoteProject      :: String
-  } deriving (Eq, Show)
 
 remoteEntriesFromLine :: String -> Maybe (String, GithubRemote)
 remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
