@@ -22,7 +22,8 @@ library
 executable circle-cli-exe
   hs-source-dirs:       app
   main-is:              Main.hs
-  other-modules:        Parser
+  other-modules:        Circle.Types
+                      , Parser
                       , Parser.Types
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base

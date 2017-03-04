@@ -4,21 +4,24 @@
 
 module Main where
 
+import Circle.Types
 import Control.Lens
+import Control.Monad
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
 import Data.Aeson
+import qualified Data.ByteString.Lazy as LBS
 import Data.Map
-import Data.Text.Lazy
+import Data.Text.Lazy as LT
 import Dhall
 import Lib
 import Network.Wreq
 import qualified Network.Wreq as W
 import System.Directory
-import qualified Data.Text as ST
+import qualified Data.Text as DT
 import Data.ByteString (ByteString)
 import Data.Maybe
-import Data.Text.Encoding (encodeUtf8)
+import Data.Text.Encoding (encodeUtf8, decodeUtf8)
 import qualified Data.Text as T
 import System.Process
 import System.IO
@@ -27,7 +30,7 @@ import qualified Prelude as P
 import qualified Data.List.Extra as LE
 import Parser
 
-data CircleConfig = CircleConfig
+newtype CircleConfig = CircleConfig
   { apiToken :: Text
   } deriving (Generic, Show)
 
@@ -47,6 +50,14 @@ getMe opts = do
   print r
   print (r ^. responseStatus)
   print (r ^. responseStatus . statusCode)
+
+getCircleEnv :: W.Options -> String -> String -> String -> IO (Either String [VariableAssignment])
+getCircleEnv opts vcsType username project = do
+  let url = "https://circleci.com/api/v1.1/project/" ++ vcsType ++ "/" ++ username ++ "/" ++ project ++ "/envvar"
+  r <- getWith opts url
+  case r ^. responseStatus . statusCode of
+    200 -> return (eitherDecode (r ^. responseBody) :: Either String [VariableAssignment])
+    _   -> return (Right [])
 
 setEnv :: W.Options -> IO ()
 setEnv opts = do
@@ -77,13 +88,21 @@ remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
 main :: IO ()
 main = do
   remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
-  let remoteEntries = LE.nub (remoteEntriesFromLine <$> remoteLines)
-  print remoteEntries
+  let remoteEntries = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
+  putStrLn $ "Remote entries: " ++ show remoteEntries
   home <- pack <$> getHomeDirectory
   circleConfig <- input auto (home `append` "/.circle/config")
-  print (circleConfig :: CircleConfig)
+  putStrLn $ "Circle config: " ++ show (circleConfig :: CircleConfig)
   let apiToken' = toStrict (apiToken circleConfig)
-  let opts = defaults & param "circle-token" .~ [apiToken']
-  getMe opts
+  let opts = defaults & param "circle-token" .~ [apiToken'] & header "Accept" .~ ["application/json"]
+  -- getMe opts
+
+  forM_ remoteEntries $ \(username, remoteEntry) -> do
+    variableAssignmentsResult <- getCircleEnv opts "github" (githubRemoteOrganisation remoteEntry) (githubRemoteProject remoteEntry)
+    case variableAssignmentsResult of
+      Right variableAssignments -> do
+        forM_ variableAssignments $ \variableAssignment -> do
+          putStrLn ("  " ++ name variableAssignment ++ "=" ++ value variableAssignment)
+      Left error -> putStrLn ("Error: " ++ error)
 
   return ()
