@@ -15,7 +15,7 @@
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver: lts-8.2
+resolver: lts-8.3
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -39,13 +39,13 @@ packages:
 - '.'
 - location:
    git: https://github.com/Gabriel439/Haskell-Dhall-Library.git
-   commit: 505a786c6dd7dcc37e43f3cc96031d30028625be
+   commit: 3958a4b42ada31ead4c1fe9ffafdb1c4bbd46280
 
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 extra-deps:
-  - dhall-1.1.0
-  - wreq-0.5.0.0
+- dhall-1.10
+- wreq-0.5.0.0
 
 # Override default flag values for local packages and extra-deps
 flags: {}

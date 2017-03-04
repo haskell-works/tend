@@ -16,17 +16,16 @@ import Network.Wreq
 import qualified Network.Wreq as W
 import System.Directory
 import qualified Data.Text as ST
-import Git
 import Data.ByteString (ByteString)
 import Data.Maybe
 import Data.Text.Encoding (encodeUtf8)
 import qualified Data.Text as T
-import Git.Libgit2 (MonadLg, LgRepo, lgFactory)
 import System.Process
 import System.IO
 import Prelude hiding (lines)
 import qualified Prelude as P
 import qualified Data.List.Extra as LE
+import Parser
 
 data CircleConfig = CircleConfig
   { apiToken :: Text
@@ -80,26 +79,6 @@ main = do
   remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
   let remoteEntries = LE.nub (remoteEntriesFromLine <$> remoteLines)
   print remoteEntries
-
-  let repoOpts = RepositoryOptions
-        { repoPath = "." :: String
-        , repoWorkingDir = Nothing
-        , repoIsBare = False
-        , repoAutoCreate = False
-        }
-  repo <- openRepository lgFactory defaultRepositoryOptions { repoPath = "." }
-
-  withRepository lgFactory "." $ do
-    maybeRef <- lookupReference "HEAD"
-    case maybeRef of
-      Just ref -> do
-        oid <- referenceToOid ref
-        liftIO $ print "==="
-        liftIO $ print oid
-        liftIO $ print "==="
-      Nothing -> liftIO $ putStrLn "No ref"
-    return ()
-
   home <- pack <$> getHomeDirectory
   circleConfig <- input auto (home `append` "/.circle/config")
   print (circleConfig :: CircleConfig)
