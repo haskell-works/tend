@@ -23,6 +23,11 @@ executable circle-cli-exe
   hs-source-dirs:       app
   main-is:              Main.hs
   other-modules:        Circle.Types
+                      , HaskellWorks.Ci.Options
+                      , HaskellWorks.Ci.Options.Cmd
+                      , Haskellworks.Ci.Options.Cmd.Push
+                      , Haskellworks.Ci.Options.Cmd.Help
+                      , Haskellworks.Ci.Options.Internal
                       , Parser
                       , Parser.Types
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
@@ -39,6 +44,7 @@ executable circle-cli-exe
                      , extra
                      , lens
                      , mtl
+                     , optparse-applicative
                      , process
                      , template-haskell
                      , text

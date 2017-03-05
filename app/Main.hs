@@ -33,7 +33,9 @@ import qualified Data.ByteString.Lazy as LBS
 import qualified Data.List.Extra as LE
 import qualified Data.Text as DT
 import qualified Data.Text as T
+import qualified HaskellWorks.Ci.Options as O
 import qualified Network.Wreq as W
+import qualified Options.Applicative as O
 import qualified Prelude as P
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
@@ -94,6 +96,7 @@ remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
 
 main :: IO ()
 main = do
+  options <- O.execParser O.optionsParser
   remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
   let remoteEntries = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
   -- LTIO.putStrLn $ "Remote entries: " <> tshow remoteEntries
