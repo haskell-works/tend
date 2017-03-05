@@ -28,12 +28,14 @@ executable circle-cli-exe
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , aeson
+                     , async
                      , attoparsec
                      , bytestring
                      , containers
                      , circle-cli
                      , dhall
                      , directory
+                     , either
                      , extra
                      , lens
                      , mtl

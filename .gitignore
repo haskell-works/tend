@@ -18,4 +18,4 @@ cabal.sandbox.config
 .stack-work/
 cabal.project.local
 /.haskell-ghc-mod.json
-/circle.config
+/ci.config

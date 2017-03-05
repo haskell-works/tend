@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass    #-}
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell   #-}
@@ -7,20 +8,21 @@ module Circle.Types where
 import Control.Lens
 import Control.Monad
 import Data.Aeson as J
+import Data.Map
 import Dhall
 
 newtype CircleConfig = CircleConfig
   { apiToken :: Text
-  } deriving (Generic, Show)
+  } deriving (Eq, Generic, Show)
 
 makeLenses ''CircleConfig
 
 instance Interpret CircleConfig
 
 data VariableAssignment = VariableAssignment
-  { name :: String
-  , value :: String
-  } deriving (Eq, Show)
+  { name :: Text
+  , value :: Text
+  } deriving (Eq, Generic, Interpret, Show)
 
 instance FromJSON VariableAssignment where
  parseJSON (Object v) = VariableAssignment
@@ -38,3 +40,13 @@ data GithubRemote = GithubRemote
   { githubRemoteOrganisation :: String
   , githubRemoteProject      :: String
   } deriving (Eq, Show)
+
+newtype CiConfig = CiConfig
+  { projects :: Vector ProjectConfig
+  } deriving (Eq, Generic, Interpret, Show)
+
+data ProjectConfig = ProjectConfig
+  { projectName       :: Text
+  , projectOwner      :: Text
+  , projectVariables  :: Vector VariableAssignment
+  } deriving (Eq, Generic, Interpret, Show)
