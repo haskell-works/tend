@@ -19,9 +19,10 @@ executable hwa-ci
   other-modules:        HaskellWorks.Ci.Api.Circle
                       , HaskellWorks.Ci.Options
                       , HaskellWorks.Ci.Options.Cmd
+                      , Haskellworks.Ci.Options.Cmd.Help
                       , Haskellworks.Ci.Options.Cmd.FromRemote
                       , Haskellworks.Ci.Options.Cmd.Push
-                      , Haskellworks.Ci.Options.Cmd.Help
+                      , Haskellworks.Ci.Options.Cmd.Version
                       , Haskellworks.Ci.Options.Internal
                       , HaskellWorks.Ci.Types
                       , Parser

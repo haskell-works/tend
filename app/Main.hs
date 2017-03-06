@@ -12,12 +12,14 @@ import Data.Maybe
 import Data.Monoid
 import Data.Text.Lazy as LT
 import Data.Text.Lazy.IO as LTIO
+import Data.Version (showVersion)
 import Dhall
 import HaskellWorks.Ci.Api.Circle
 import HaskellWorks.Ci.Options
 import HaskellWorks.Ci.Options.Cmd
 import HaskellWorks.Ci.Types
 import Network.Wreq
+import Paths_hwa_ci (version)
 import Prelude hiding (lines)
 import System.Directory
 import System.Process
@@ -57,6 +59,12 @@ main :: IO ()
 main = do
   options <- O.execParser O.optionsParser
   case options ^. goptCmd of
+    CmdOfCmdFromRemote cmd -> do
+      remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
+      let remoteEntries = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
+      LTIO.putStrLn $ "Remote entries: " <> tshow remoteEntries
+    CmdOfCmdHelp cmd -> do
+      LTIO.putStrLn "No help yet"
     CmdOfCmdPush cmd -> do
       circleConfig <- loadCircleConfig
 
@@ -87,9 +95,5 @@ main = do
           Left error -> LTIO.putStrLn ("Error: " <> error)
 
       return ()
-    CmdOfCmdFromRemote cmd -> do
-      remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
-      let remoteEntries = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
-      LTIO.putStrLn $ "Remote entries: " <> tshow remoteEntries
-    CmdOfCmdHelp cmd -> do
-      LTIO.putStrLn "No help yet"
+    CmdOfCmdVersion cmd -> do
+      P.putStrLn $ "hwa-ci " <> showVersion version
