@@ -1,8 +1,8 @@
-name:                circle-cli
+name:                hwa-ci
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/circle-cli#readme
+homepage:            https://github.com/githubuser/hwa-ci#readme
 license:             BSD3
 license-file:        LICENSE
 author:              Author name here
@@ -13,13 +13,7 @@ build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.10
 
-library
-  hs-source-dirs:      src
-  exposed-modules:     Lib
-  build-depends:       base >= 4.7 && < 5
-  default-language:    Haskell2010
-
-executable circle-cli-exe
+executable hwa-ci
   hs-source-dirs:       app
   main-is:              Main.hs
   other-modules:        HaskellWorks.Ci.Api.Circle
@@ -39,7 +33,6 @@ executable circle-cli-exe
                      , attoparsec
                      , bytestring
                      , containers
-                     , circle-cli
                      , dhall
                      , directory
                      , either
@@ -54,15 +47,15 @@ executable circle-cli-exe
                      , wreq
   default-language:    Haskell2010
 
-test-suite circle-cli-test
+test-suite hwa-ci-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
   build-depends:       base
-                     , circle-cli
+                     , hwa-ci
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/circle-cli
+  location: https://github.com/githubuser/hwa-ci
