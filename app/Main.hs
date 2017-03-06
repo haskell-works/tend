@@ -4,7 +4,6 @@
 
 module Main where
 
-import Circle.Types
 import Control.Concurrent
 import Control.Concurrent.Async
 import Control.Lens
@@ -22,6 +21,10 @@ import Data.Text.Lazy as LT
 import Data.Text.IO as TIO
 import Data.Text.Lazy.IO as LTIO
 import Dhall
+import HaskellWorks.Ci.Api.Circle
+import HaskellWorks.Ci.Options
+import HaskellWorks.Ci.Options.Cmd
+import HaskellWorks.Ci.Types
 import Lib
 import Network.Wreq
 import Prelude hiding (lines)
@@ -50,29 +53,6 @@ splitByChar c s = case rest of
   _:rest -> chunk : splitByChar c rest
   where (chunk, rest) = P.break (==c) s
 
-getMe :: W.Options -> IO ()
-getMe opts = do
-  r <- getWith opts "https://circleci.com/api/v1.1/me"
-  print r
-  print (r ^. responseStatus)
-  print (r ^. responseStatus . statusCode)
-
-postCircleEnv :: W.Options -> Text -> Text -> Text -> VariableAssignment -> IO (Either Text VariableAssignment)
-postCircleEnv opts vcsType username project assignment = do
-  let url = "https://circleci.com/api/v1.1/project/" <> vcsType <> "/" <> username <> "/" <> project <> "/envvar"
-  r <- postWith opts (unpack url) (toJSON assignment)
-  case r ^. responseStatus . statusCode of
-    code | code >= 200 && code < 300  -> return (mapLeft LT.pack (eitherDecode (r ^. responseBody) :: Either String VariableAssignment))
-    _                                 -> return (Left "Error")
-
-getCircleEnv :: W.Options -> Text -> Text -> Text -> IO (Either Text [VariableAssignment])
-getCircleEnv opts vcsType username project = do
-  let url = "https://circleci.com/api/v1.1/project/" <> vcsType <> "/" <> username <> "/" <> project <> "/envvar"
-  r <- getWith opts (unpack url)
-  case r ^. responseStatus . statusCode of
-    code | code >= 200 && code < 300  -> return (mapLeft LT.pack (eitherDecode (r ^. responseBody) :: Either String [VariableAssignment]))
-    _                                 -> return (Left "Error")
-
 setEnv :: W.Options -> IO ()
 setEnv opts = do
   let vars = fromList
@@ -97,39 +77,43 @@ remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
 main :: IO ()
 main = do
   options <- O.execParser O.optionsParser
-  remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
-  let remoteEntries = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
-  -- LTIO.putStrLn $ "Remote entries: " <> tshow remoteEntries
-  home <- pack <$> getHomeDirectory
-  circleConfig <- input auto (home `append` "/.circle/config")
-  -- LTIO.putStrLn $ "Circle config: " <> tshow (circleConfig :: CircleConfig)
-  let apiToken' = toStrict (apiToken circleConfig)
-  let opts = defaults & param "circle-token" .~ [apiToken'] & header "Accept" .~ ["application/json"]
-  -- getMe opts
+  case options ^. goptCmd of
+    CmdOfCmdPush cmd -> do
+      remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
+      let remoteEntries = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
+      -- LTIO.putStrLn $ "Remote entries: " <> tshow remoteEntries
+      home <- pack <$> getHomeDirectory
+      circleConfig <- input auto (home `append` "/.circle/config")
+      -- LTIO.putStrLn $ "Circle config: " <> tshow (circleConfig :: CircleConfig)
+      let apiToken' = toStrict (apiToken circleConfig)
+      let opts = defaults & param "circle-token" .~ [apiToken'] & header "Accept" .~ ["application/json"]
+      -- getMe opts
 
-  ciConfig :: CiConfig <- input auto "./ci.config"
-  -- print ciConfig
+      ciConfig :: CiConfig <- input auto "./ci.config"
+      -- print ciConfig
 
-  projectsAssignments <- forConcurrently (projects ciConfig) $ \project -> do
-    projectAssignments <- forConcurrently (projectVariables project) $ \projectVariableAssignment -> do
-      postCircleEnv opts "github" (projectOwner project) (projectName project) projectVariableAssignment
-    return (project, projectAssignments)
+      projectsAssignments <- forConcurrently (projects ciConfig) $ \project -> do
+        projectAssignments <- forConcurrently (projectVariables project) $ \projectVariableAssignment -> do
+          postCircleEnv opts "github" (projectOwner project) (projectName project) projectVariableAssignment
+        return (project, projectAssignments)
 
-  forM_ projectsAssignments $ \(project, projectAssignments) -> do
-    LTIO.putStrLn $ "Uploading environment variables to: " <> projectOwner project <> "/" <> projectName project
-    forM_ projectAssignments $ \variableAssignmentResult -> do
-      case variableAssignmentResult of
-        Right variableAssignment  -> LTIO.putStrLn $ "  " <> name variableAssignment
-        Left error                -> LTIO.putStrLn "Error"
+      forM_ projectsAssignments $ \(project, projectAssignments) -> do
+        LTIO.putStrLn $ "Uploading environment variables to: " <> projectOwner project <> "/" <> projectName project
+        forM_ projectAssignments $ \variableAssignmentResult -> do
+          case variableAssignmentResult of
+            Right variableAssignment  -> LTIO.putStrLn $ "  " <> name variableAssignment
+            Left error                -> LTIO.putStrLn "Error"
 
-  forM_ (projects ciConfig) $ \project -> do
-    variableAssignmentsResult <- getCircleEnv opts "github" (projectOwner project) (projectName project)
-    LTIO.putStrLn $ "Configured variables for: " <> projectOwner project <> "/" <> projectName project
-    case variableAssignmentsResult of
-      Right variableAssignments -> do
-        forM_ variableAssignments $ \variableAssignment -> do
-          LTIO.putStrLn ("  " <> name variableAssignment <> "=" <> value variableAssignment)
-          return ()
-      Left error -> LTIO.putStrLn ("Error: " <> error)
+      forM_ (projects ciConfig) $ \project -> do
+        variableAssignmentsResult <- getCircleEnv opts "github" (projectOwner project) (projectName project)
+        LTIO.putStrLn $ "Configured variables for: " <> projectOwner project <> "/" <> projectName project
+        case variableAssignmentsResult of
+          Right variableAssignments -> do
+            forM_ variableAssignments $ \variableAssignment -> do
+              LTIO.putStrLn ("  " <> name variableAssignment <> "=" <> value variableAssignment)
+              return ()
+          Left error -> LTIO.putStrLn ("Error: " <> error)
 
-  return ()
+      return ()
+    CmdOfCmdHelp cmd -> do
+      LTIO.putStrLn "No help yet"

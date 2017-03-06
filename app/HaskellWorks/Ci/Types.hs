@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell   #-}
 
-module Circle.Types where
+module HaskellWorks.Ci.Types where
 
 import Control.Lens
 import Control.Monad

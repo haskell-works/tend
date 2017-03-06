@@ -22,12 +22,13 @@ library
 executable circle-cli-exe
   hs-source-dirs:       app
   main-is:              Main.hs
-  other-modules:        Circle.Types
+  other-modules:        HaskellWorks.Ci.Api.Circle
                       , HaskellWorks.Ci.Options
                       , HaskellWorks.Ci.Options.Cmd
                       , Haskellworks.Ci.Options.Cmd.Push
                       , Haskellworks.Ci.Options.Cmd.Help
                       , Haskellworks.Ci.Options.Internal
+                      , HaskellWorks.Ci.Types
                       , Parser
                       , Parser.Types
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N

@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell  #-}
+
 module HaskellWorks.Ci.Options where
 
 import Control.Lens
@@ -13,6 +15,8 @@ newtype GlobalOptions = GlobalOptions
   { _goptCmd :: Cmd
   }
   deriving (Show, Eq)
+
+makeLenses ''GlobalOptions
 
 parserGlobalOptions :: Parser GlobalOptions
 parserGlobalOptions = GlobalOptions <$> cmds
