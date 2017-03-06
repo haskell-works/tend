@@ -25,6 +25,7 @@ executable circle-cli-exe
   other-modules:        HaskellWorks.Ci.Api.Circle
                       , HaskellWorks.Ci.Options
                       , HaskellWorks.Ci.Options.Cmd
+                      , Haskellworks.Ci.Options.Cmd.FromRemote
                       , Haskellworks.Ci.Options.Cmd.Push
                       , Haskellworks.Ci.Options.Cmd.Help
                       , Haskellworks.Ci.Options.Internal

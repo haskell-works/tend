@@ -8,36 +8,21 @@ import Control.Concurrent
 import Control.Concurrent.Async
 import Control.Lens
 import Control.Monad
-import Control.Monad.IO.Class
-import Control.Monad.Trans.Class
-import Data.Aeson
-import Data.ByteString (ByteString)
-import Data.Either.Combinators
-import Data.Map
 import Data.Maybe
 import Data.Monoid
-import Data.Text.Encoding (encodeUtf8, decodeUtf8)
 import Data.Text.Lazy as LT
-import Data.Text.IO as TIO
 import Data.Text.Lazy.IO as LTIO
 import Dhall
 import HaskellWorks.Ci.Api.Circle
 import HaskellWorks.Ci.Options
 import HaskellWorks.Ci.Options.Cmd
 import HaskellWorks.Ci.Types
-import Lib
 import Network.Wreq
 import Prelude hiding (lines)
 import System.Directory
-import System.IO
 import System.Process
-import Parser
-import qualified Data.ByteString.Lazy as LBS
 import qualified Data.List.Extra as LE
-import qualified Data.Text as DT
-import qualified Data.Text as T
 import qualified HaskellWorks.Ci.Options as O
-import qualified Network.Wreq as W
 import qualified Options.Applicative as O
 import qualified Prelude as P
 
@@ -46,21 +31,6 @@ import qualified Prelude as P
 -- | Conversion from a `Show` constrained type to `Text`
 tshow :: Show a => a -> Text
 tshow = pack . show
-
-splitByChar :: Char -> String -> [String]
-splitByChar c s = case rest of
-  []     -> [chunk]
-  _:rest -> chunk : splitByChar c rest
-  where (chunk, rest) = P.break (==c) s
-
-setEnv :: W.Options -> IO ()
-setEnv opts = do
-  let vars = fromList
-        [ ("name", "foo")
-        , ("value", "bar")
-        ] :: Map String String
-  r <- postWith opts "https://circleci.com/api/v1.1/project/github/pico-works/pico-disposal/envvar" (toJSON vars)
-  print r
 
 remoteEntriesFromLine :: String -> Maybe (String, GithubRemote)
 remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
@@ -74,23 +44,25 @@ remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
       else Nothing
   _ -> Nothing
 
+loadCircleConfig :: IO CircleConfig
+loadCircleConfig = do
+  home <- pack <$> getHomeDirectory
+  input auto (home `append` "/.circle/config")
+
+httpOptsFromCircleConfig :: CircleConfig -> Options
+httpOptsFromCircleConfig circleConfig = let apiToken' = toStrict (apiToken circleConfig) in
+  defaults & param "circle-token" .~ [apiToken'] & header "Accept" .~ ["application/json"]
+
 main :: IO ()
 main = do
   options <- O.execParser O.optionsParser
   case options ^. goptCmd of
     CmdOfCmdPush cmd -> do
-      remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
-      let remoteEntries = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
-      -- LTIO.putStrLn $ "Remote entries: " <> tshow remoteEntries
-      home <- pack <$> getHomeDirectory
-      circleConfig <- input auto (home `append` "/.circle/config")
-      -- LTIO.putStrLn $ "Circle config: " <> tshow (circleConfig :: CircleConfig)
-      let apiToken' = toStrict (apiToken circleConfig)
-      let opts = defaults & param "circle-token" .~ [apiToken'] & header "Accept" .~ ["application/json"]
-      -- getMe opts
+      circleConfig <- loadCircleConfig
+
+      let opts = httpOptsFromCircleConfig circleConfig
 
       ciConfig :: CiConfig <- input auto "./ci.config"
-      -- print ciConfig
 
       projectsAssignments <- forConcurrently (projects ciConfig) $ \project -> do
         projectAssignments <- forConcurrently (projectVariables project) $ \projectVariableAssignment -> do
@@ -115,5 +87,9 @@ main = do
           Left error -> LTIO.putStrLn ("Error: " <> error)
 
       return ()
+    CmdOfCmdFromRemote cmd -> do
+      remoteLines <- P.lines <$> readProcess "git" ["remote", "-v"] ""
+      let remoteEntries = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
+      LTIO.putStrLn $ "Remote entries: " <> tshow remoteEntries
     CmdOfCmdHelp cmd -> do
       LTIO.putStrLn "No help yet"
