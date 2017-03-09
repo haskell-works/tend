@@ -5,6 +5,7 @@
 module HaskellWorks.Ci.Options.Cmd where
 
 import Control.Lens
+import Data.Monoid
 import Options.Applicative
 import HaskellWorks.Ci.Options.Cmd.FromRemote as C
 import HaskellWorks.Ci.Options.Cmd.Help       as C
@@ -21,8 +22,9 @@ data Cmd
 makeLenses ''Cmd
 
 cmds :: Parser Cmd
-cmds =
-      (CmdOfCmdFromRemote <$> subparser (command "from-remote"  $ info parserCmdFromRemote  $ progDesc "From Remote"))
-  <|> (CmdOfCmdHelp       <$> subparser (command "help"         $ info parserCmdHelp        $ progDesc "Help"))
-  <|> (CmdOfCmdPush       <$> subparser (command "push"         $ info parserCmdPush        $ progDesc "Push"))
-  <|> (CmdOfCmdVersion    <$> subparser (command "version"      $ info parserCmdVersion     $ progDesc "Version"))
+cmds = subparser
+  (   command "from-remote" (info (CmdOfCmdFromRemote <$> parserCmdFromRemote) $ progDesc "From Remote" )
+  <>  command "help"        (info (CmdOfCmdHelp       <$> parserCmdHelp      ) $ progDesc "Help"        )
+  <>  command "push"        (info (CmdOfCmdPush       <$> parserCmdPush      ) $ progDesc "Push"        )
+  <>  command "version"     (info (CmdOfCmdVersion    <$> parserCmdVersion   ) $ progDesc "Version"     )
+  )
