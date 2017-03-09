@@ -9,12 +9,14 @@ import Data.Monoid
 import Options.Applicative
 import HaskellWorks.Ci.Options.Cmd.FromRemote as C
 import HaskellWorks.Ci.Options.Cmd.Help       as C
+import HaskellWorks.Ci.Options.Cmd.OpenCi     as C
 import HaskellWorks.Ci.Options.Cmd.Push       as C
 import HaskellWorks.Ci.Options.Cmd.Version    as C
 
 data Cmd
   = CmdOfCmdFromRemote  { _cmdFromRemote  :: CmdFromRemote  }
   | CmdOfCmdHelp        { _cmdHelp        :: CmdHelp        }
+  | CmdOfCmdOpenCi      { _cmdOpenCi      :: CmdOpenCi      }
   | CmdOfCmdPush        { _cmdPush        :: CmdPush        }
   | CmdOfCmdVersion     { _cmdVersion     :: CmdVersion     }
   deriving (Show, Eq)
@@ -23,8 +25,9 @@ makeLenses ''Cmd
 
 cmds :: Parser Cmd
 cmds = subparser
-  (   command "from-remote" (info (CmdOfCmdFromRemote <$> parserCmdFromRemote) $ progDesc "From Remote" )
-  <>  command "help"        (info (CmdOfCmdHelp       <$> parserCmdHelp      ) $ progDesc "Help"        )
-  <>  command "push"        (info (CmdOfCmdPush       <$> parserCmdPush      ) $ progDesc "Push"        )
-  <>  command "version"     (info (CmdOfCmdVersion    <$> parserCmdVersion   ) $ progDesc "Version"     )
+  (   command "from-remote" (info (CmdOfCmdFromRemote <$> parserCmdFromRemote) $ progDesc "From Remote"         )
+  <>  command "help"        (info (CmdOfCmdHelp       <$> parserCmdHelp      ) $ progDesc "Help"                )
+  <>  command "open-ci"     (info (CmdOfCmdOpenCi     <$> parserCmdOpenCi    ) $ progDesc "Open CI in browser"  )
+  <>  command "push"        (info (CmdOfCmdPush       <$> parserCmdPush      ) $ progDesc "Push"                )
+  <>  command "version"     (info (CmdOfCmdVersion    <$> parserCmdVersion   ) $ progDesc "Version"             )
   )
