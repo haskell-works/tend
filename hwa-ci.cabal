@@ -18,6 +18,7 @@ executable hwa-ci
   main-is:              Main.hs
   other-modules:        HaskellWorks.Ci.Action.FromRemote
                       , HaskellWorks.Ci.Action.Help
+                      , HaskellWorks.Ci.Action.NewPr
                       , HaskellWorks.Ci.Action.OpenCi
                       , HaskellWorks.Ci.Action.Push
                       , HaskellWorks.Ci.Action.Version
@@ -25,8 +26,9 @@ executable hwa-ci
                       , HaskellWorks.Ci.Git
                       , HaskellWorks.Ci.Options
                       , HaskellWorks.Ci.Options.Cmd
-                      , HaskellWorks.Ci.Options.Cmd.Help
                       , HaskellWorks.Ci.Options.Cmd.FromRemote
+                      , HaskellWorks.Ci.Options.Cmd.Help
+                      , HaskellWorks.Ci.Options.Cmd.NewPr
                       , HaskellWorks.Ci.Options.Cmd.OpenCi
                       , HaskellWorks.Ci.Options.Cmd.Push
                       , HaskellWorks.Ci.Options.Cmd.Version
