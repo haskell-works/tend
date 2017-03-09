@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings    #-}
+{-# LANGUAGE RecordWildCards      #-}
 
 module HaskellWorks.Ci.Git where
 
@@ -13,6 +14,13 @@ data GithubRemote = GithubRemote
   , githubRemoteProject      :: Text
   } deriving (Eq, Show)
 
+data GitBranchDetails = GitBranchDetails
+  { gitBranchDetailsOrganisation  :: Text
+  , gitBranchDetailsProject       :: Text
+  , gitBranchDetailsAlias         :: Text
+  , gitBranchDetailsBranch        :: Text
+  } deriving (Eq, Show)
+
 gitCurrentBranch :: IO Text
 gitCurrentBranch = LT.strip . LT.pack <$> readProcess "git" ["rev-parse", "--abbrev-ref", "HEAD"] ""
 
@@ -24,6 +32,23 @@ gitRemotes = do
   remoteLines <- lines <$> readProcess "git" ["remote", "-v"] ""
   let x = catMaybes (LE.nub (remoteEntriesFromLine <$> remoteLines))
   return x
+
+gitTrackingBranchDetails :: IO (Either Text GitBranchDetails)
+gitTrackingBranchDetails = do
+  trackingBranch <- gitTrackingBranch
+  case splitAliasBranch trackingBranch of
+    Just (alias, branch) -> do
+      remotes <- gitRemotes
+      case listToMaybe (filter (\x -> fst x == alias) remotes) of
+        Just (_, GithubRemote {..}) ->
+          return $ Right GitBranchDetails
+            { gitBranchDetailsOrganisation  = githubRemoteOrganisation
+            , gitBranchDetailsProject       = githubRemoteProject
+            , gitBranchDetailsAlias         = alias
+            , gitBranchDetailsBranch        = branch
+            }
+        Nothing -> return $ Left "No matching remotes"
+    Nothing -> return $ Left "Current branch invalid"
 
 ----
 
@@ -38,3 +63,8 @@ remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
         _ -> Nothing
       else Nothing
   _ -> Nothing
+
+splitAliasBranch :: Text -> Maybe (Text, Text)
+splitAliasBranch fullBranch = case LT.splitOn "/" fullBranch of
+  [alias, branch] -> Just (alias, branch)
+  _               -> Nothing
