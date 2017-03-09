@@ -10,11 +10,9 @@ import Data.Text.Lazy (Text)
 import Data.Text.Lazy.IO as LTIO
 import HaskellWorks.Ci.Git
 import HaskellWorks.Ci.Options.Cmd.OpenCi
+import HaskellWorks.Ci.Text
 import Web.Browser
 import qualified Data.Text.Lazy as LT
-
-tshow :: Show a => a -> Text
-tshow = LT.pack . show
 
 splitAliasBranch :: Text -> Maybe (Text, Text)
 splitAliasBranch fullBranch = case LT.splitOn "/" fullBranch of

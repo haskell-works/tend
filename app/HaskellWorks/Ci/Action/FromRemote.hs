@@ -9,6 +9,7 @@ import Data.Text.Lazy.IO as LTIO
 import HaskellWorks.Ci.Api.Circle
 import HaskellWorks.Ci.Options
 import HaskellWorks.Ci.Options.Cmd.FromRemote
+import HaskellWorks.Ci.Text
 import HaskellWorks.Ci.Types
 import Prelude hiding (lines)
 import System.Process
@@ -16,10 +17,6 @@ import qualified Data.List.Extra          as LE
 import qualified HaskellWorks.Ci.Options  as O
 import qualified Options.Applicative      as O
 import qualified Prelude                  as P
-
--- | Conversion from a `Show` constrained type to `Text`
-tshow :: Show a => a -> Text
-tshow = pack . show
 
 remoteEntriesFromLine :: String -> Maybe (String, GithubRemote)
 remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
