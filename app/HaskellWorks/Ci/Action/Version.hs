@@ -4,10 +4,9 @@ module HaskellWorks.Ci.Action.Version where
 
 import Data.Monoid
 import Data.Text.Lazy.IO as LTIO
-import Data.Version (showVersion)
+import Data.Version (showVersion, Version)
 import HaskellWorks.Ci.Options.Cmd.Version
-import Paths_hwa_ci (version)
 import qualified Data.Text.Lazy as LT
 
-actionVersion :: CmdVersion -> IO ()
-actionVersion cmd = LTIO.putStrLn $ "hwa-ci " <> LT.pack (showVersion version)
+actionVersion :: CmdVersion -> Version -> IO ()
+actionVersion cmd version = LTIO.putStrLn $ "hwa-ci " <> LT.pack (showVersion version)

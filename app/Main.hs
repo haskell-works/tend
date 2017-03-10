@@ -13,6 +13,7 @@ import HaskellWorks.Ci.Action.Push
 import HaskellWorks.Ci.Action.Version
 import HaskellWorks.Ci.Options
 import HaskellWorks.Ci.Options.Cmd
+import Paths_hwa_ci (version)
 import qualified HaskellWorks.Ci.Options as O
 import qualified Options.Applicative as O
 
@@ -27,4 +28,4 @@ main = do
     CmdOfCmdOpenCi      cmd -> actionOpenCi     cmd
     CmdOfCmdNewPr       cmd -> actionNewPr      cmd
     CmdOfCmdPush        cmd -> actionPush       cmd
-    CmdOfCmdVersion     cmd -> actionVersion    cmd
+    CmdOfCmdVersion     cmd -> actionVersion    cmd version
