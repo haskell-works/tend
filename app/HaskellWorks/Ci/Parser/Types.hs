@@ -1,4 +1,4 @@
-module Parser.Types where
+module HaskellWorks.Ci.Parser.Types where
 
 import Data.Text
 

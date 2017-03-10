@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators     #-}
 
-module Parser where
+module HaskellWorks.Ci.Parser where
 
 import Control.Applicative
 import Control.Monad
@@ -11,7 +11,7 @@ import Data.Char
 import Data.List.Extra
 import Data.Maybe
 import Data.Text
-import qualified Parser.Types as T
+import qualified HaskellWorks.Ci.Parser.Types as T
 
 (|||) :: (a -> Bool) -> (a -> Bool) -> a -> Bool
 (|||) f g c = f c || g c

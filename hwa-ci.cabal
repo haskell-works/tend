@@ -33,10 +33,10 @@ executable hwa-ci
                       , HaskellWorks.Ci.Options.Cmd.Push
                       , HaskellWorks.Ci.Options.Cmd.Version
                       , HaskellWorks.Ci.Options.Internal
+                      , HaskellWorks.Ci.Parser
+                      , HaskellWorks.Ci.Parser.Types
                       , HaskellWorks.Ci.Text
                       , HaskellWorks.Ci.Types
-                      , Parser
-                      , Parser.Types
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , aeson
