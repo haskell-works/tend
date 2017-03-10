@@ -16,7 +16,17 @@ cabal-version:       >=1.10
 executable hwa-ci
   hs-source-dirs:       app
   main-is:              Main.hs
-  other-modules:        HaskellWorks.Ci.Action.FromRemote
+  ghc-options:          -threaded -rtsopts -with-rtsopts=-N
+  build-depends:        base
+                      , hwa-ci
+                      , lens
+                      , optparse-applicative
+
+  default-language:    Haskell2010
+
+library
+  hs-source-dirs:       src
+  exposed-modules:      HaskellWorks.Ci.Action.FromRemote
                       , HaskellWorks.Ci.Action.Help
                       , HaskellWorks.Ci.Action.NewPr
                       , HaskellWorks.Ci.Action.OpenCi
@@ -37,33 +47,26 @@ executable hwa-ci
                       , HaskellWorks.Ci.Parser.Types
                       , HaskellWorks.Ci.Text
                       , HaskellWorks.Ci.Types
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base
-                     , aeson
-                     , async
-                     , attoparsec
-                     , bytestring
-                     , containers
-                     , dhall
-                     , directory
-                     , either
-                     , extra
-                     , lens
-                     , mtl
-                     , open-browser
-                     , optparse-applicative
-                     , process
-                     , template-haskell
-                     , text
-                     , transformers
-                     , wreq
-  default-language:    Haskell2010
-
-library
-  hs-source-dirs:       src
-  exposed-modules:      HaskellWorks.Ci.Lib
 
   build-depends:        base
+                      , aeson
+                      , async
+                      , attoparsec
+                      , bytestring
+                      , containers
+                      , dhall
+                      , directory
+                      , either
+                      , extra
+                      , lens
+                      , mtl
+                      , open-browser
+                      , optparse-applicative
+                      , process
+                      , template-haskell
+                      , text
+                      , transformers
+                      , wreq
 
   default-language:     Haskell2010
   ghc-options:          -Wall
