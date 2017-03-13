@@ -30,6 +30,7 @@ library
                       , HaskellWorks.Ci.Action.Help
                       , HaskellWorks.Ci.Action.NewPr
                       , HaskellWorks.Ci.Action.OpenCi
+                      , HaskellWorks.Ci.Action.OrgRepos
                       , HaskellWorks.Ci.Action.Push
                       , HaskellWorks.Ci.Action.Version
                       , HaskellWorks.Ci.Api.Circle
@@ -40,6 +41,7 @@ library
                       , HaskellWorks.Ci.Options.Cmd.Help
                       , HaskellWorks.Ci.Options.Cmd.NewPr
                       , HaskellWorks.Ci.Options.Cmd.OpenCi
+                      , HaskellWorks.Ci.Options.Cmd.OrgRepos
                       , HaskellWorks.Ci.Options.Cmd.Push
                       , HaskellWorks.Ci.Options.Cmd.Version
                       , HaskellWorks.Ci.Options.Internal
