@@ -60,6 +60,7 @@ library
                       , directory
                       , either
                       , extra
+                      , github
                       , lens
                       , mtl
                       , open-browser

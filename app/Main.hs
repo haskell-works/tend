@@ -9,6 +9,7 @@ import HaskellWorks.Ci.Action.Help
 import HaskellWorks.Ci.Action.FromRemote
 import HaskellWorks.Ci.Action.NewPr
 import HaskellWorks.Ci.Action.OpenCi
+import HaskellWorks.Ci.Action.OrgRepos
 import HaskellWorks.Ci.Action.Push
 import HaskellWorks.Ci.Action.Version
 import HaskellWorks.Ci.Options
@@ -26,6 +27,7 @@ main = do
     CmdOfCmdFromRemote  cmd -> actionFromRemote cmd
     CmdOfCmdHelp        cmd -> actionHelp       cmd
     CmdOfCmdOpenCi      cmd -> actionOpenCi     cmd
+    CmdOfCmdOrgRepos    cmd -> actionOrgRepos   cmd
     CmdOfCmdNewPr       cmd -> actionNewPr      cmd
     CmdOfCmdPush        cmd -> actionPush       cmd
     CmdOfCmdVersion     cmd -> actionVersion    cmd version
