@@ -4,10 +4,10 @@ module HaskellWorks.Ci.Options where
 
 import Control.Lens
 import Data.Monoid
+import Data.Version
 import Options.Applicative
 
 import HaskellWorks.Ci.Options.Cmd
-import HaskellWorks.Ci.Options.Internal
 
 data HelpOptions = HelpOptions deriving (Show, Eq)
 
@@ -21,9 +21,12 @@ makeLenses ''GlobalOptions
 parserGlobalOptions :: Parser GlobalOptions
 parserGlobalOptions = GlobalOptions <$> cmds
 
-optionsParser :: ParserInfo GlobalOptions
-optionsParser = info (helper <*> parserGlobalOptions)
+optionsParser :: Version -> String -> ParserInfo GlobalOptions
+optionsParser version gitHash = info (helper <*> versionOption <*> parserGlobalOptions)
   (  fullDesc
   <> progDesc "CLI tool for Continuous Integration"
   <> header "CI tool"
   )
+  where versionOption = infoOption
+          (concat [showVersion version, " ", gitHash])
+          (long "version" <> help "Show version")

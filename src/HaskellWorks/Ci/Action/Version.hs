@@ -9,4 +9,4 @@ import HaskellWorks.Ci.Options.Cmd.Version
 import qualified Data.Text.Lazy as LT
 
 actionVersion :: CmdVersion -> Version -> IO ()
-actionVersion cmd version = LTIO.putStrLn $ "hwa-ci " <> LT.pack (showVersion version)
+actionVersion cmd version = LTIO.putStrLn $ "hwa-ci " <> LT.pack (showVersion version) <> " "

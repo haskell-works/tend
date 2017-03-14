@@ -18,6 +18,7 @@ executable hwa-ci
   main-is:              Main.hs
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N
   build-depends:        base
+                      , gitrev
                       , hwa-ci
                       , lens
                       , optparse-applicative
