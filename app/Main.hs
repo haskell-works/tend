@@ -15,6 +15,7 @@ import HaskellWorks.Ci.Action.NewPr
 import HaskellWorks.Ci.Action.OpenCi
 import HaskellWorks.Ci.Action.OrgRepos
 import HaskellWorks.Ci.Action.Push
+import HaskellWorks.Ci.Action.UserRepos
 import HaskellWorks.Ci.Action.Version
 import HaskellWorks.Ci.Options
 import HaskellWorks.Ci.Options.Cmd
@@ -35,4 +36,5 @@ main = do
     CmdOfCmdOrgRepos    cmd -> actionOrgRepos   cmd
     CmdOfCmdNewPr       cmd -> actionNewPr      cmd
     CmdOfCmdPush        cmd -> actionPush       cmd
+    CmdOfCmdUserRepos   cmd -> actionUserRepos  cmd
     CmdOfCmdVersion     cmd -> actionVersion    cmd version

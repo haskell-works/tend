@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings    #-}
 
-module HaskellWorks.Ci.Action.OrgRepos where
+module HaskellWorks.Ci.Action.UserRepos where
 
 import Control.Monad
 import Data.List.Extra
 import Data.Monoid
-import HaskellWorks.Ci.Options.Cmd.OrgRepos
+import HaskellWorks.Ci.Options.Cmd.UserRepos
 import qualified Data.ByteString.Char8 as BSC8
 import qualified Data.Text.IO as T
 import qualified GitHub.Auth as Auth
@@ -15,8 +15,8 @@ import System.Directory
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 
-actionOrgRepos :: CmdOrgRepos -> IO ()
-actionOrgRepos _ = do
+actionUserRepos :: CmdUserRepos -> IO ()
+actionUserRepos _ = do
   home <- getHomeDirectory
   authString <- trim <$> readFile (home <> "/.github/dev-token")
   let auth = Auth.OAuth (BSC8.pack authString)

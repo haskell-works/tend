@@ -33,6 +33,7 @@ library
                       , HaskellWorks.Ci.Action.OpenCi
                       , HaskellWorks.Ci.Action.OrgRepos
                       , HaskellWorks.Ci.Action.Push
+                      , HaskellWorks.Ci.Action.UserRepos
                       , HaskellWorks.Ci.Action.Version
                       , HaskellWorks.Ci.Api.Circle
                       , HaskellWorks.Ci.Git
@@ -44,6 +45,7 @@ library
                       , HaskellWorks.Ci.Options.Cmd.OpenCi
                       , HaskellWorks.Ci.Options.Cmd.OrgRepos
                       , HaskellWorks.Ci.Options.Cmd.Push
+                      , HaskellWorks.Ci.Options.Cmd.UserRepos
                       , HaskellWorks.Ci.Options.Cmd.Version
                       , HaskellWorks.Ci.Options.Internal
                       , HaskellWorks.Ci.Parser

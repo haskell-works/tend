@@ -8,8 +8,6 @@ module HaskellWorks.Ci.Options.Cmd.OrgRepos
   ) where
 
 import Control.Lens
-import Data.Text.Lazy
-import HaskellWorks.Ci.Options.Internal
 import Options.Applicative
 
 data CmdOrgRepos = CmdOrgRepos deriving (Show, Eq)
