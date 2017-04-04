@@ -4,7 +4,6 @@ module HaskellWorks.Ci.Api.Circle where
 
 import Control.Lens
 import Data.Aeson
-import Data.ByteString (ByteString)
 import Data.Either.Combinators
 import Data.Monoid
 import Data.Text.Lazy

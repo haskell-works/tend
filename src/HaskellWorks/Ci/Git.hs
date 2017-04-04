@@ -54,7 +54,7 @@ gitTrackingBranchDetails = do
 
 remoteEntriesFromLine :: String -> Maybe (Text, GithubRemote)
 remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
-  alias : uri : _ : xs -> case LE.split (== ':') uri of
+  alias : uri : _ : _ -> case LE.split (== ':') uri of
     [userHost, uriPath] -> if userHost == "git@github.com"
       then case LE.split (== '/') uriPath of
         [organisation, gitFile] -> case LE.split (== '.') gitFile of
@@ -62,6 +62,7 @@ remoteEntriesFromLine s = case LE.split (== ' ') (LE.replace "\t" " " s) of
           _ -> Nothing
         _ -> Nothing
       else Nothing
+    _ -> Nothing
   _ -> Nothing
 
 splitAliasBranch :: Text -> Maybe (Text, Text)

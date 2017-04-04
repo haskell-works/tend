@@ -1,14 +1,14 @@
-{-# LANGUAGE DeriveAnyClass    #-}
-{-# LANGUAGE DeriveGeneric     #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell   #-}
+{-# LANGUAGE DeriveAnyClass         #-}
+{-# LANGUAGE DeriveGeneric          #-}
+{-# LANGUAGE DuplicateRecordFields  #-}
+{-# LANGUAGE OverloadedStrings      #-}
+{-# LANGUAGE TemplateHaskell        #-}
 
 module HaskellWorks.Ci.Types where
 
 import Control.Lens
 import Control.Monad
 import Data.Aeson as J
-import Data.Map
 import Dhall
 
 newtype CircleConfig = CircleConfig
@@ -20,7 +20,7 @@ makeLenses ''CircleConfig
 instance Interpret CircleConfig
 
 data VariableAssignment = VariableAssignment
-  { name :: Text
+  { name  :: Text
   , value :: Text
   } deriving (Eq, Generic, Interpret, Show)
 
@@ -31,9 +31,9 @@ instance FromJSON VariableAssignment where
  parseJSON _ = mzero
 
 instance ToJSON VariableAssignment where
-  toJSON (VariableAssignment name value) = object
-    [ "name"  J..= name
-    , "value" J..= value
+  toJSON (VariableAssignment name' value') = object
+    [ "name"  J..= name'
+    , "value" J..= value'
     ]
 
 data GithubRemote = GithubRemote

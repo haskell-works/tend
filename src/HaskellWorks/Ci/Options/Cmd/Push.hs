@@ -8,8 +8,6 @@ module HaskellWorks.Ci.Options.Cmd.Push
   ) where
 
 import Control.Lens
-import Data.Text.Lazy
-import HaskellWorks.Ci.Options.Internal
 import Options.Applicative
 
 data CmdPush = CmdPush deriving (Show, Eq)

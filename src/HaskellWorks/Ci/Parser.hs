@@ -1,15 +1,11 @@
-
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators     #-}
 
 module HaskellWorks.Ci.Parser where
 
 import Control.Applicative
-import Control.Monad
 import Data.Attoparsec.Text as AT
 import Data.Char
-import Data.List.Extra
-import Data.Maybe
 import Data.Text
 import qualified HaskellWorks.Ci.Parser.Types as T
 

@@ -3,7 +3,6 @@
 
 module HaskellWorks.Ci.Action.Push where
 
-import Control.Concurrent
 import Control.Concurrent.Async
 import Control.Lens
 import Control.Monad
@@ -12,7 +11,6 @@ import Data.Text.Lazy as LT
 import Data.Text.Lazy.IO as LTIO
 import Dhall
 import HaskellWorks.Ci.Api.Circle
-import HaskellWorks.Ci.Options
 import HaskellWorks.Ci.Options.Cmd.Push
 import HaskellWorks.Ci.Types
 import Network.Wreq
@@ -28,7 +26,7 @@ httpOptsFromCircleConfig circleConfig = let apiToken' = toStrict (apiToken circl
   defaults & param "circle-token" .~ [apiToken'] & header "Accept" .~ ["application/json"]
 
 actionPush :: CmdPush -> IO ()
-actionPush cmd = do
+actionPush _ = do
   circleConfig <- loadCircleConfig
 
   let opts = httpOptsFromCircleConfig circleConfig
@@ -45,7 +43,7 @@ actionPush cmd = do
     forM_ projectAssignments $ \variableAssignmentResult ->
       case variableAssignmentResult of
         Right variableAssignment  -> LTIO.putStrLn $ "  " <> name variableAssignment
-        Left error                -> LTIO.putStrLn "Error"
+        Left e                    -> LTIO.putStrLn $ "Error: " <> e
 
   forM_ (projects ciConfig) $ \project -> do
     variableAssignmentsResult <- getCircleEnv opts "github" (projectOwner project) (projectName project)
@@ -55,6 +53,6 @@ actionPush cmd = do
         forM_ variableAssignments $ \variableAssignment -> do
           LTIO.putStrLn ("  " <> name variableAssignment <> "=" <> value variableAssignment)
           return ()
-      Left error -> LTIO.putStrLn ("Error: " <> error)
+      Left e -> LTIO.putStrLn ("Error: " <> e)
 
   return ()

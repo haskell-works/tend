@@ -7,8 +7,6 @@ module HaskellWorks.Ci.Options.Cmd.Version
   ) where
 
 import Control.Lens
-import Data.Text.Lazy
-import HaskellWorks.Ci.Options.Internal
 import Options.Applicative
 
 data CmdVersion = CmdVersion deriving (Show, Eq)

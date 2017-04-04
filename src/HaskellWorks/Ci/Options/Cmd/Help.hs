@@ -8,8 +8,6 @@ module HaskellWorks.Ci.Options.Cmd.Help
   ) where
 
 import Control.Lens
-import Data.Text.Lazy
-import HaskellWorks.Ci.Options.Internal
 import Options.Applicative
 
 data CmdHelp = CmdHelp deriving (Show, Eq)
