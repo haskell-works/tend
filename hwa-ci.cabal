@@ -52,6 +52,11 @@ library
                       , HaskellWorks.Ci.Parser.Types
                       , HaskellWorks.Ci.Text
                       , HaskellWorks.Ci.Types
+                      , HaskellWorks.Ci.Types.CiConfig
+                      , HaskellWorks.Ci.Types.CircleConfig
+                      , HaskellWorks.Ci.Types.GithubRemote
+                      , HaskellWorks.Ci.Types.ProjectConfig
+                      , HaskellWorks.Ci.Types.VariableAssignment
 
   build-depends:        base
                       , aeson
