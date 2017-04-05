@@ -36,6 +36,7 @@ library
                       , HaskellWorks.Ci.Action.UserRepos
                       , HaskellWorks.Ci.Action.Version
                       , HaskellWorks.Ci.Api.Circle
+                      , HaskellWorks.Ci.Dhall
                       , HaskellWorks.Ci.Git
                       , HaskellWorks.Ci.Options
                       , HaskellWorks.Ci.Options.Cmd

@@ -10,6 +10,3 @@ import HaskellWorks.Ci.Types.CircleConfig       as X
 import HaskellWorks.Ci.Types.GithubRemote       as X
 import HaskellWorks.Ci.Types.ProjectConfig      as X
 import HaskellWorks.Ci.Types.VariableAssignment as X
-
--- auto :: (GenericInterpret (Rep a), Generic a, Interpret a) => Type a
--- auto = autoWith (defaultInterpretOptions { fieldModifier = TL.dropWhile (== '_') })

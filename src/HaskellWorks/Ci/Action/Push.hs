@@ -9,8 +9,8 @@ import Control.Monad
 import Data.Monoid
 import Data.Text.Lazy as LT
 import Data.Text.Lazy.IO as LTIO
-import Dhall
 import HaskellWorks.Ci.Api.Circle
+import HaskellWorks.Ci.Dhall
 import HaskellWorks.Ci.Options.Cmd.Push
 import HaskellWorks.Ci.Types
 import Network.Wreq
@@ -22,7 +22,7 @@ loadCircleConfig = do
   input auto (home `append` "/.circle/config")
 
 httpOptsFromCircleConfig :: CircleConfig -> Options
-httpOptsFromCircleConfig circleConfig = let apiToken' = toStrict (apiToken circleConfig) in
+httpOptsFromCircleConfig circleConfig = let apiToken' = toStrict (circleConfig ^. apiToken) in
   defaults & param "circle-token" .~ [apiToken'] & header "Accept" .~ ["application/json"]
 
 actionPush :: CmdPush -> IO ()

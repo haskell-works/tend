@@ -1,16 +1,13 @@
-{-# LANGUAGE DeriveAnyClass         #-}
 {-# LANGUAGE DeriveGeneric          #-}
-{-# LANGUAGE DuplicateRecordFields  #-}
-{-# LANGUAGE OverloadedStrings      #-}
 {-# LANGUAGE TemplateHaskell        #-}
 
 module HaskellWorks.Ci.Types.CircleConfig where
 
 import Control.Lens
-import Dhall
+import Dhall hiding (auto)
 
 newtype CircleConfig = CircleConfig
-  { apiToken :: Text
+  { _apiToken :: Text
   } deriving (Eq, Generic, Show)
 
 makeLenses ''CircleConfig
