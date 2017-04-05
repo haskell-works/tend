@@ -11,6 +11,9 @@ import Control.Monad
 import Data.Aeson as J
 import Dhall
 
+-- auto :: (GenericInterpret (Rep a), Generic a, Interpret a) => Type a
+-- auto = autoWith (defaultInterpretOptions { fieldModifier = TL.dropWhile (== '_') })
+
 newtype CircleConfig = CircleConfig
   { apiToken :: Text
   } deriving (Eq, Generic, Show)
