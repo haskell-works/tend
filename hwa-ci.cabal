@@ -20,26 +20,26 @@ source-repository head
 
 common base                   { build-depends: base                 >= 4        && < 5      }
 
-common aeson                  { build-depends: aeson                                        }
-common async                  { build-depends: async                                        }
-common attoparsec             { build-depends: attoparsec                                   }
-common bytestring             { build-depends: bytestring                                   }
-common containers             { build-depends: containers                                   }
-common dhall                  { build-depends: dhall                                        }
-common directory              { build-depends: directory                                    }
-common either                 { build-depends: either                                       }
-common extra                  { build-depends: extra                                        }
-common github                 { build-depends: github                                       }
-common gitrev                 { build-depends: gitrev                                       }
-common lens                   { build-depends: lens                                         }
-common mtl                    { build-depends: mtl                                          }
-common open-browser           { build-depends: open-browser                                 }
-common optparse-applicative   { build-depends: optparse-applicative                         }
-common process                { build-depends: process                                      }
-common template-haskell       { build-depends: template-haskell                             }
-common text                   { build-depends: text                                         }
-common transformers           { build-depends: transformers                                 }
-common wreq                   { build-depends: wreq                                         }
+common aeson                  { build-depends: aeson                >= 1.4.5.0              }
+common async                  { build-depends: async                >= 2.2.2                }
+common attoparsec             { build-depends: attoparsec           >= 0.13.2.3             }
+common bytestring             { build-depends: bytestring           >= 0.10.8.2             }
+common containers             { build-depends: containers           >= 0.6.0.1              }
+common dhall                  { build-depends: dhall                >= 1.26.1               }
+common directory              { build-depends: directory            >= 1.3.3.0              }
+common either                 { build-depends: either               >= 5.0.1.1              }
+common extra                  { build-depends: extra                >= 1.6.18               }
+common github                 { build-depends: github               >= 0.23                 }
+common gitrev                 { build-depends: gitrev               >= 1.3.1                }
+common lens                   { build-depends: lens                 >= 4.18.1               }
+common mtl                    { build-depends: mtl                  >= 2.2.2                }
+common open-browser           { build-depends: open-browser         >= 0.2.1.0              }
+common optparse-applicative   { build-depends: optparse-applicative >= 0.15.1.0             }
+common process                { build-depends: process              >= 1.6.5.0              }
+common template-haskell       { build-depends: template-haskell     >= 2.12.0.0             }
+common text                   { build-depends: text                 >= 1.2.3.1              }
+common transformers           { build-depends: transformers         >= 0.5.6.2              }
+common wreq                   { build-depends: wreq                 >= 0.5.3.2              }
 
 common config
   default-language:     Haskell2010
