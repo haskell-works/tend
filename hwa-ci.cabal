@@ -1,31 +1,86 @@
-name:                hwa-ci
-version:             0.1.0.2
--- synopsis:
--- description:
-homepage:            https://github.com/githubuser/hwa-ci#readme
-license:             BSD3
-license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2017 Author name here
-category:            Web
-build-type:          Simple
-extra-source-files:  README.md
-cabal-version:       >=1.10
+cabal-version: 2.2
+
+name:                   hwa-ci
+version:                0.1.0.2
+synopsis:               hwa-ci
+description:            hwa-ci.
+homepage:               https://github.com/githubuser/hwa-ci#readme
+license:                BSD-3-Clause
+license-file:           LICENSE
+author:                 Author name here
+maintainer:             example@example.com
+copyright:              2017 Author name here
+category:               Web
+build-type:             Simple
+extra-source-files:     README.md
+
+source-repository head
+  type:     git
+  location: https://github.com/githubuser/hwa-ci
+
+common base                   { build-depends: base                 >= 4        && < 5      }
+
+common aeson                  { build-depends: aeson                                        }
+common async                  { build-depends: async                                        }
+common attoparsec             { build-depends: attoparsec                                   }
+common bytestring             { build-depends: bytestring                                   }
+common containers             { build-depends: containers                                   }
+common dhall                  { build-depends: dhall                                        }
+common directory              { build-depends: directory                                    }
+common either                 { build-depends: either                                       }
+common extra                  { build-depends: extra                                        }
+common github                 { build-depends: github                                       }
+common gitrev                 { build-depends: gitrev                                       }
+common lens                   { build-depends: lens                                         }
+common mtl                    { build-depends: mtl                                          }
+common open-browser           { build-depends: open-browser                                 }
+common optparse-applicative   { build-depends: optparse-applicative                         }
+common process                { build-depends: process                                      }
+common template-haskell       { build-depends: template-haskell                             }
+common text                   { build-depends: text                                         }
+common transformers           { build-depends: transformers                                 }
+common wreq                   { build-depends: wreq                                         }
+
+common config
+  default-language:     Haskell2010
+  ghc-options:          -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+
+common hwa-ci
+  build-depends:        hwa-ci
 
 executable hwa-ci
-  hs-source-dirs:       app
-  main-is:              Main.hs
-  ghc-options:          -threaded -rtsopts -with-rtsopts=-N
-  build-depends:        base
+  import:               base, config
                       , gitrev
                       , hwa-ci
                       , lens
                       , optparse-applicative
-
-  default-language:    Haskell2010
+  hs-source-dirs:       app
+  main-is:              Main.hs
+  ghc-options:          -threaded -rtsopts -with-rtsopts=-N
+  other-modules:        Paths_hwa_ci
+  autogen-modules:      Paths_hwa_ci
 
 library
+  import:               base, config
+                      , aeson
+                      , async
+                      , attoparsec
+                      , bytestring
+                      , containers
+                      , dhall
+                      , directory
+                      , either
+                      , extra
+                      , github
+                      , lens
+                      , mtl
+                      , open-browser
+                      , optparse-applicative
+                      , process
+                      , template-haskell
+                      , text
+                      , transformers
+                      , wreq
   hs-source-dirs:       src
   exposed-modules:      HaskellWorks.Ci.Action.FromRemote
                       , HaskellWorks.Ci.Action.Help
@@ -58,40 +113,15 @@ library
                       , HaskellWorks.Ci.Types.GithubRemote
                       , HaskellWorks.Ci.Types.ProjectConfig
                       , HaskellWorks.Ci.Types.VariableAssignment
-
-  build-depends:        base
-                      , aeson
-                      , async
-                      , attoparsec
-                      , bytestring
-                      , containers
-                      , dhall
-                      , directory
-                      , either
-                      , extra
-                      , github
-                      , lens
-                      , mtl
-                      , open-browser
-                      , optparse-applicative
-                      , process
-                      , template-haskell
-                      , text
-                      , transformers
-                      , wreq
-
-  default-language:     Haskell2010
-  ghc-options:          -Wall
+  other-modules:        Paths_hwa_ci
+  autogen-modules:      Paths_hwa_ci
 
 test-suite hwa-ci-test
-  type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
-  main-is:             Spec.hs
-  build-depends:       base
-                     , hwa-ci
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  default-language:    Haskell2010
-
-source-repository head
-  type:     git
-  location: https://github.com/githubuser/hwa-ci
+  import:               base, config
+                      , hwa-ci
+  type:                 exitcode-stdio-1.0
+  hs-source-dirs:       test
+  main-is:              Spec.hs
+  ghc-options:          -threaded -rtsopts -with-rtsopts=-N
+  other-modules:        Paths_hwa_ci
+  autogen-modules:      Paths_hwa_ci
