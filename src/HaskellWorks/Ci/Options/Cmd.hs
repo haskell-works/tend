@@ -1,12 +1,10 @@
 {-# LANGUAGE DeriveAnyClass   #-}
+{-# LANGUAGE DeriveGeneric    #-}
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE TemplateHaskell  #-}
 
 module HaskellWorks.Ci.Options.Cmd where
 
-import Control.Lens
-import Data.Monoid
-import Options.Applicative
+import GHC.Generics
 import HaskellWorks.Ci.Options.Cmd.FromRemote as C
 import HaskellWorks.Ci.Options.Cmd.Help       as C
 import HaskellWorks.Ci.Options.Cmd.NewPr      as C
@@ -15,6 +13,7 @@ import HaskellWorks.Ci.Options.Cmd.OrgRepos   as C
 import HaskellWorks.Ci.Options.Cmd.Push       as C
 import HaskellWorks.Ci.Options.Cmd.UserRepos  as C
 import HaskellWorks.Ci.Options.Cmd.Version    as C
+import Options.Applicative
 
 data Cmd
   = CmdOfCmdFromRemote  { _cmdFromRemote  :: CmdFromRemote  }
@@ -25,9 +24,7 @@ data Cmd
   | CmdOfCmdPush        { _cmdPush        :: CmdPush        }
   | CmdOfCmdVersion     { _cmdVersion     :: CmdVersion     }
   | CmdOfCmdUserRepos   { _cmdUserRepos   :: CmdUserRepos   }
-  deriving (Show, Eq)
-
-makeLenses ''Cmd
+  deriving (Show, Eq, Generic)
 
 cmds :: Parser Cmd
 cmds = subparser

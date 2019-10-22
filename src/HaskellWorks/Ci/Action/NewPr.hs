@@ -1,14 +1,14 @@
-{-# LANGUAGE OverloadedStrings    #-}
-{-# LANGUAGE RecordWildCards      #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards   #-}
 
 module HaskellWorks.Ci.Action.NewPr where
 
 import Control.Monad
-import Data.Monoid
-import Data.Text.Lazy.IO as LTIO
+import Data.Text.Lazy.IO                 as LTIO
 import HaskellWorks.Ci.Git
 import HaskellWorks.Ci.Options.Cmd.NewPr
 import Web.Browser
+
 import qualified Data.Text.Lazy as LT
 
 actionNewPr :: CmdNewPr -> IO ()
