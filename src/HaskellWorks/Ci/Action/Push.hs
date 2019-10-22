@@ -18,6 +18,8 @@ import HaskellWorks.Ci.Types
 import Network.Wreq
 import System.Directory
 
+import qualified HaskellWorks.Ci.Types.VariableAssignment as VA
+
 loadCircleConfig :: IO CircleConfig
 loadCircleConfig = do
   home <- pack <$> getHomeDirectory
@@ -53,7 +55,7 @@ actionPush _ = do
     case variableAssignmentsResult of
       Right variableAssignments ->
         forM_ variableAssignments $ \variableAssignment -> do
-          LTIO.putStrLn ("  " <> fromStrict (name variableAssignment) <> "=" <> fromStrict (value variableAssignment))
+          LTIO.putStrLn ("  " <> fromStrict (name variableAssignment) <> "=" <> fromStrict (VA.value variableAssignment))
           return ()
       Left e -> LTIO.putStrLn ("Error: " <> e)
 
