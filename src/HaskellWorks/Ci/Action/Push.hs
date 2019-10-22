@@ -37,25 +37,25 @@ actionPush _ = do
 
   ciConfig :: CiConfig <- input auto "./ci.config"
 
-  projectsAssignments <- forConcurrently (projects ciConfig) $ \project -> do
-    projectAssignments <- forConcurrently (projectVariables project) $ \projectVariableAssignment ->
-      postCircleEnv opts "github" (fromStrict (projectOwner project)) (fromStrict (projectName project)) projectVariableAssignment
+  projectsAssignments <- forConcurrently (ciConfig ^. the @"projects") $ \project -> do
+    projectAssignments <- forConcurrently (project ^. the @"projectVariables") $ \projectVariableAssignment ->
+      postCircleEnv opts "github" (fromStrict (project ^. the @"projectOwner")) (fromStrict (project ^. the @"projectName")) projectVariableAssignment
     return (project, projectAssignments)
 
   forM_ projectsAssignments $ \(project, projectAssignments) -> do
-    LTIO.putStrLn $ "Uploading environment variables to: " <> fromStrict (projectOwner project) <> "/" <> fromStrict (projectName project)
+    LTIO.putStrLn $ "Uploading environment variables to: " <> fromStrict (project ^. the @"projectOwner") <> "/" <> fromStrict (project ^. the @"projectName")
     forM_ projectAssignments $ \variableAssignmentResult ->
       case variableAssignmentResult of
-        Right variableAssignment -> LTIO.putStrLn $ "  " <> fromStrict (name variableAssignment)
+        Right variableAssignment -> LTIO.putStrLn $ "  " <> fromStrict (variableAssignment ^. the @"name")
         Left e                   -> LTIO.putStrLn $ "Error: " <> e
 
   forM_ (projects ciConfig) $ \project -> do
-    variableAssignmentsResult <- getCircleEnv opts "github" (fromStrict (projectOwner project)) (fromStrict (projectName project))
-    LTIO.putStrLn $ "Configured variables for: " <> fromStrict (projectOwner project) <> "/" <> fromStrict (projectName project)
+    variableAssignmentsResult <- getCircleEnv opts "github" (fromStrict (project ^. the @"projectOwner")) (fromStrict (project ^. the @"projectName"))
+    LTIO.putStrLn $ "Configured variables for: " <> fromStrict (project ^. the @"projectOwner") <> "/" <> fromStrict (project ^. the @"projectName")
     case variableAssignmentsResult of
       Right variableAssignments ->
         forM_ variableAssignments $ \variableAssignment -> do
-          LTIO.putStrLn ("  " <> fromStrict (name variableAssignment) <> "=" <> fromStrict (VA.value variableAssignment))
+          LTIO.putStrLn ("  " <> fromStrict (variableAssignment ^. the @"name") <> "=" <> fromStrict (variableAssignment ^. the @"value"))
           return ()
       Left e -> LTIO.putStrLn ("Error: " <> e)
 
