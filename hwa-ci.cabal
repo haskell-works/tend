@@ -59,7 +59,8 @@ executable hwa-ci
   hs-source-dirs:       app
   main-is:              Main.hs
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N
-  other-modules:        Paths_hwa_ci
+  other-modules:        App.Commands
+                      , Paths_hwa_ci
   autogen-modules:      Paths_hwa_ci
 
 library
@@ -85,28 +86,18 @@ library
                       , transformers
                       , wreq
   hs-source-dirs:       src
-  exposed-modules:      HaskellWorks.Ci.Action.FromRemote
-                      , HaskellWorks.Ci.Action.Help
-                      , HaskellWorks.Ci.Action.NewPr
-                      , HaskellWorks.Ci.Action.OpenCi
-                      , HaskellWorks.Ci.Action.OrgRepos
-                      , HaskellWorks.Ci.Action.Push
-                      , HaskellWorks.Ci.Action.UserRepos
-                      , HaskellWorks.Ci.Action.Version
-                      , HaskellWorks.Ci.Api.Circle
+  exposed-modules:      HaskellWorks.Ci.Api.Circle
+                      , HaskellWorks.Ci.Commands.FromRemote
+                      , HaskellWorks.Ci.Commands.Help
+                      , HaskellWorks.Ci.Commands.NewPr
+                      , HaskellWorks.Ci.Commands.OpenCi
+                      , HaskellWorks.Ci.Commands.OrgRepos
+                      , HaskellWorks.Ci.Commands.Push
+                      , HaskellWorks.Ci.Commands.Types
+                      , HaskellWorks.Ci.Commands.UserRepos
+                      , HaskellWorks.Ci.Commands.Version
                       , HaskellWorks.Ci.Dhall
                       , HaskellWorks.Ci.Git
-                      , HaskellWorks.Ci.Options
-                      , HaskellWorks.Ci.Options.Cmd
-                      , HaskellWorks.Ci.Options.Cmd.FromRemote
-                      , HaskellWorks.Ci.Options.Cmd.Help
-                      , HaskellWorks.Ci.Options.Cmd.NewPr
-                      , HaskellWorks.Ci.Options.Cmd.OpenCi
-                      , HaskellWorks.Ci.Options.Cmd.OrgRepos
-                      , HaskellWorks.Ci.Options.Cmd.Push
-                      , HaskellWorks.Ci.Options.Cmd.UserRepos
-                      , HaskellWorks.Ci.Options.Cmd.Version
-                      , HaskellWorks.Ci.Options.Internal
                       , HaskellWorks.Ci.Parser
                       , HaskellWorks.Ci.Parser.Types
                       , HaskellWorks.Ci.Text
