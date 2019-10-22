@@ -1,12 +1,14 @@
+{-# LANGUAGE DataKinds           #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications    #-}
 
 module HaskellWorks.Ci.Action.Push where
 
 import Control.Concurrent.Async
 import Control.Lens
 import Control.Monad
-import Data.Monoid
+import Data.Generics.Product.Any
 import Data.Text.Lazy                   as LT
 import Data.Text.Lazy.IO                as LTIO
 import HaskellWorks.Ci.Api.Circle
@@ -22,7 +24,7 @@ loadCircleConfig = do
   input auto (LT.toStrict (home `append` "/.circle/config"))
 
 httpOptsFromCircleConfig :: CircleConfig -> Options
-httpOptsFromCircleConfig circleConfig = let apiToken' = (circleConfig ^. apiToken) in
+httpOptsFromCircleConfig circleConfig = let apiToken' = (circleConfig ^. the @"apiToken") in
   defaults & param "circle-token" .~ [apiToken'] & header "Accept" .~ ["application/json"]
 
 actionPush :: CmdPush -> IO ()

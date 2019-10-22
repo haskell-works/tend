@@ -1,10 +1,9 @@
-{-# LANGUAGE TemplateHaskell  #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module HaskellWorks.Ci.Options where
 
-import Control.Lens
-import Data.Monoid
 import Data.Version
+import GHC.Generics
 import Options.Applicative
 
 import HaskellWorks.Ci.Options.Cmd
@@ -12,11 +11,9 @@ import HaskellWorks.Ci.Options.Cmd
 data HelpOptions = HelpOptions deriving (Show, Eq)
 
 newtype GlobalOptions = GlobalOptions
-  { _goptCmd :: Cmd
+  { cmd :: Cmd
   }
-  deriving (Show, Eq)
-
-makeLenses ''GlobalOptions
+  deriving (Show, Eq, Generic)
 
 parserGlobalOptions :: Parser GlobalOptions
 parserGlobalOptions = GlobalOptions <$> cmds

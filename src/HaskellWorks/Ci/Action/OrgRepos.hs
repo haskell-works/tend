@@ -1,17 +1,16 @@
-{-# LANGUAGE OverloadedStrings    #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module HaskellWorks.Ci.Action.OrgRepos where
 
-import Control.Monad
-import Data.List.Extra
-import Data.Monoid
-import HaskellWorks.Ci.Options.Cmd.OrgRepos
-import qualified Data.ByteString.Char8 as BSC8
-import qualified Data.Text.IO as T
-import qualified GitHub.Auth as Auth
-import qualified GitHub.Data.Repos as Github
-import qualified GitHub.Endpoints.Repos as Github
-import System.Directory
+import           Control.Monad
+import qualified Data.ByteString.Char8                as BSC8
+import           Data.List.Extra
+import qualified Data.Text.IO                         as T
+import qualified GitHub.Auth                          as Auth
+import qualified GitHub.Data.Repos                    as Github
+import qualified GitHub.Endpoints.Repos               as Github
+import           HaskellWorks.Ci.Options.Cmd.OrgRepos
+import           System.Directory
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 
