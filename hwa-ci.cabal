@@ -115,5 +115,3 @@ test-suite hwa-ci-test
   hs-source-dirs:       test
   main-is:              Spec.hs
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N
-  other-modules:        Paths_hwa_ci
-  autogen-modules:      Paths_hwa_ci
