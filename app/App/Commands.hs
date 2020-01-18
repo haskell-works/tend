@@ -1,6 +1,5 @@
 module App.Commands where
 
-import Data.Semigroup                      ((<>))
 import HaskellWorks.Ci.Commands.FromRemote
 import HaskellWorks.Ci.Commands.Help
 import HaskellWorks.Ci.Commands.NewPr
