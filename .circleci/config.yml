@@ -44,6 +44,26 @@ workflows:
             branches:
               only: master
 
+      - github/release-cabal:
+          name: GitHub Release
+          requires:
+            - GHC 8.4.4
+            - GHC 8.6.5
+            - GHC 8.8.2
+            # - Darwin
+          checkout: true
+          attach-workspace: true
+          # source-env-file: ./build/project.env
+          soft: false
+          before-release:
+            - run:
+                name: Prepare environment for release
+                command: |
+                  tar zcvf /tmp/artefacts/${CIRCLE_PROJECT_REPONAME}_${BUILD_ARCH}_${BUILD_OS_NAME}.tar.gz ./build/dist/asif
+          filters:
+            branches:
+              only: master
+
       # - hackage/upload:
       #     context: haskell-ci
       #     publish: true
