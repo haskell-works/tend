@@ -8,7 +8,7 @@ import HaskellWorks.Ci.Commands.OrgRepos
 import HaskellWorks.Ci.Commands.UserRepos
 import HaskellWorks.Ci.Commands.Version
 import Options.Applicative
-import Paths_hwa_ci                        (version)
+import Paths_tend                          (version)
 
 commands :: Parser (IO ())
 commands = commandsGeneral

@@ -12,7 +12,7 @@ import qualified Data.Text.Lazy.IO              as LTIO
 import qualified HaskellWorks.Ci.Commands.Types as Z
 
 runVersion :: Version -> Z.VersionOptions -> IO ()
-runVersion version _ = LTIO.putStrLn $ "hwa-ci " <> LT.pack (showVersion version) <> " "
+runVersion version _ = LTIO.putStrLn $ "tend " <> LT.pack (showVersion version) <> " "
 
 optsVersion :: Parser Z.VersionOptions
 optsVersion = pure Z.VersionOptions
