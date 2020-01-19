@@ -77,8 +77,8 @@ workflows:
             - run:
                 name: Prepare environment for release
                 command: |
-                  source ./workspace/ghc-8.6.5/project.env
-                  tar zcvf /tmp/artefacts/${CIRCLE_PROJECT_REPONAME}_${BUILD_ARCH}_${BUILD_OS_NAME}.tar.gz -C ./workspace/ghc-8.6.5/dist/ ./${BUILD_EXE_NAME}
+                  source ./workspace/ghc-8.8.2/project.env
+                  tar zcvf /tmp/artefacts/${CIRCLE_PROJECT_REPONAME}_${BUILD_ARCH}_${BUILD_OS_NAME}.tar.gz -C ./workspace/ghc-8.8.2/dist/ ./${BUILD_EXE_NAME}
 
                   # source ./workspace/osx/project.env
                   # tar zcvf /tmp/artefacts/${CIRCLE_PROJECT_REPONAME}_${BUILD_ARCH}_${BUILD_OS_NAME}.tar.gz -C ./workspace/osx/dist/ ./${BUILD_EXE_NAME}
