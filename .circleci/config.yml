@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  haskell: haskell-works/haskell-build@4.0.5
+  haskell: haskell-works/haskell-build@4.1.7
   github: haskell-works/github-release@1.3.0
   hackage: haskell-works/hackage@1.2.0
 
@@ -22,13 +22,13 @@ workflows:
           cabal-test-extra: --test-show-details=direct
 
       - haskell/build-with-binary-cache:
-          name: GHC 8.8.2
-          executor: haskell/ghc-8_8_2
+          name: GHC 8.8.3
+          executor: haskell/ghc-8_8_3
           context: haskell-ci
           binary-cache-uri: ${BINARY_CACHE_URI-"http://hw-binary-cache-us-west-2-a.s3-website-us-west-2.amazonaws.com/archive"}
           cabal-build-extra: --write-ghc-environment-files=ghc8.4.4+
           cabal-test-extra: --test-show-details=direct
-          workspace-dir: workspace/ghc-8.8.2
+          workspace-dir: workspace/ghc-8.8.3
           write-result-workspace: true
 
       - haskell/build-with-cci-cache:
@@ -70,14 +70,14 @@ workflows:
           attach-workspace: true
           requires:
             - GHC 8.6.5
-            - GHC 8.8.2
+            - GHC 8.8.3
             # - Darwin
           checkout: true
           before-release:
             - run:
                 name: Prepare environment for release
                 command: |
-                  source ./workspace/ghc-8.8.2/project.env
+                  source ./workspace/ghc-8.8.3/project.env
                   tar zcvf /tmp/artefacts/${CIRCLE_PROJECT_REPONAME}_${BUILD_ARCH}_${BUILD_OS_NAME}.tar.gz -C ./workspace/ghc-8.8.2/dist/ ./${BUILD_EXE_NAME}
 
                   # source ./workspace/osx/project.env
