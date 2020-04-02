@@ -71,7 +71,7 @@ workflows:
           requires:
             - GHC 8.6.5
             - GHC 8.8.3
-            # - Darwin
+            - Darwin
           checkout: true
           before-release:
             - run:
