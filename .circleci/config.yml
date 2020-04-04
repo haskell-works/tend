@@ -54,12 +54,6 @@ workflows:
                 # because brew update takes up to 4 minutes for some reason.
                 paths: [/usr/local/Homebrew]
 
-            - run:
-                name: Install cabal-plan
-                command: |
-                  curl -L https://github.com/haskell-works/cabal-plan/releases/download/v0.5.0.0/cabal-plan_x86_osx.tar.gz -o cabal-plan_x86_osx.tar.gz
-                  tar zxvf cabal-plan_x86_osx.tar.gz -C /usr/local/bin cabal-plan
-                  rm cabal-plan_x86_osx.tar.gz
           filters:
             branches:
               only: master
