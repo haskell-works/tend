@@ -5,7 +5,6 @@ module HaskellWorks.Ci.Commands.FromRemote
   ) where
 
 import Data.Maybe
-import Data.Monoid
 import Data.Text.Lazy.IO    as LTIO
 import HaskellWorks.Ci.Git
 import HaskellWorks.Ci.Text
