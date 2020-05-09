@@ -14,7 +14,7 @@ import qualified Data.Text.IO                   as T
 import qualified GitHub                         as GH
 import qualified HaskellWorks.Ci.Commands.Types as Z
 
-{-# ANN module ("HLint: ignore Redundant do" :: String) #-}
+{- HLINT ignore "Redundant do"    -}
 
 runOrgRepos :: Z.OrgReposOptions -> IO ()
 runOrgRepos _ = do
