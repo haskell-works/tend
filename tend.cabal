@@ -20,24 +20,24 @@ source-repository head
 
 common base                   { build-depends: base                 >= 4          && < 5      }
 
-common aeson                  { build-depends: aeson                >= 1.4.5.0    && < 1.5    }
+common aeson                  { build-depends: aeson                >= 1.4.5.0    && < 1.6    }
 common async                  { build-depends: async                >= 2.2.2      && < 2.3    }
 common attoparsec             { build-depends: attoparsec           >= 0.13.2.3   && < 0.14   }
-common bytestring             { build-depends: bytestring           >= 0.10.8.2   && < 0.11   }
+common bytestring             { build-depends: bytestring           >= 0.10.8.2   && < 0.12   }
 common containers             { build-depends: containers           >= 0.6.0.1    && < 0.7    }
-common dhall                  { build-depends: dhall                >= 1.29.0     && < 1.39   }
+common dhall                  { build-depends: dhall                >= 1.29.0     && < 1.41   }
 common directory              { build-depends: directory            >= 1.3.3.0    && < 1.4    }
 common either                 { build-depends: either               >= 5.0.1.1    && < 5.1    }
-common extra                  { build-depends: extra                >= 1.6.18     && < 1.7    }
-common generic-lens           { build-depends: generic-lens         >= 1.2.0.1    && < 2.1    }
+common extra                  { build-depends: extra                >= 1.6.18     && < 1.8    }
+common generic-lens           { build-depends: generic-lens         >= 1.2.0.1    && < 2.3    }
 common github                 { build-depends: github               >= 0.24       && < 0.27   }
 common gitrev                 { build-depends: gitrev               >= 1.3.1      && < 1.4    }
-common lens                   { build-depends: lens                 >= 4.18.1     && < 4.20   }
+common lens                   { build-depends: lens                 >= 4.18.1     && < 6      }
 common mtl                    { build-depends: mtl                  >= 2.2.2      && < 2.3    }
 common open-browser           { build-depends: open-browser         >= 0.2.1.0    && < 0.3    }
 common optparse-applicative   { build-depends: optparse-applicative >= 0.15.1.0   && < 0.17   }
 common process                { build-depends: process              >= 1.6.5.0    && < 1.7    }
-common template-haskell       { build-depends: template-haskell     >= 2.12.0.0   && < 2.17   }
+common template-haskell       { build-depends: template-haskell     >= 2.12.0.0   && < 2.18   }
 common text                   { build-depends: text                 >= 1.2.3.1    && < 1.3    }
 common transformers           { build-depends: transformers         >= 0.5.6.2    && < 0.6    }
 common wreq                   { build-depends: wreq                 >= 0.5.3.2    && < 0.6    }
